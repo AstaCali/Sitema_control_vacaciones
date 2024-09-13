@@ -17,7 +17,8 @@ export class UsuarioComponent implements OnInit {
   public usurioForm : any; // obcional
   public role : Role[] = [];
   //public usuarioSeleccionado: Usuario;
-  public usuarioSeleccionado: any;
+  public usuarioSeleccionado: any;// se almcena lo recuperado
+  public titulo : string = '';
 
   constructor( private fb : FormBuilder,
                private usarioService : UsuarioService,
@@ -54,9 +55,10 @@ export class UsuarioComponent implements OnInit {
   cargarUsuario(id: number | string){
 
     if ( id === 'nuevo' ) {
+      this.titulo='Registrar Empleado';
       return;
     }
-
+    this.titulo='Actualizar Empleado';
     this.usarioService.obtenerUsuario(Number (id) )
       .subscribe( datouser => {
         console.log('DATO ANTES DEL IF', datouser);
@@ -118,6 +120,7 @@ export class UsuarioComponent implements OnInit {
         .subscribe( resp =>{
           console.log('SE ACTUALIZO',resp)
           Swal.fire('Actualizando',`${ name } actualizado correctamente`, 'success' );
+          this.router.navigateByUrl(`/dashboard/usuario`);
         })
     } else{
       //--crear
@@ -131,6 +134,11 @@ export class UsuarioComponent implements OnInit {
     }
 
     //console.log('USUARIO ENVIADO', this.usurioForm.value);
+  }
+
+  cancelar()
+  {
+    this.router.navigateByUrl(`/dashboard/usuario`);
   }
   // this.usuarioService.crearUsuario( this.registerUserForm.value)
   // .subscribe( resp => {

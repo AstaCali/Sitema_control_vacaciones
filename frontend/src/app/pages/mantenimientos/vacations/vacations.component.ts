@@ -19,6 +19,7 @@ export class VacationsComponent implements OnInit {
   public disponibleVacations : number = 0;
   public vacationSeleccionado : any; // para almacenar lo recuperado
   public selectedName : string ='';
+  public titulo : string = '';
 
   @ViewChild('autocompleteInput', { static: true }) autocompleteInput: any;
 
@@ -63,6 +64,8 @@ export class VacationsComponent implements OnInit {
 
   guardarVacation(){
 
+    const { name } = this.VacationForm.value;
+
     if(this.vacationSeleccionado){
 
       console.log('entro estos datos para editar', this.vacationSeleccionado);
@@ -72,8 +75,10 @@ export class VacationsComponent implements OnInit {
         id: this.vacationSeleccionado.id
       }
       console.log('Lo que se nviara para editar', data);
-      //this.vacationservice.
-
+      this.vacationservice.putVacation(data). subscribe( resp=>{
+        Swal.fire('Actualizando',`${ name } actualizado correctamente`, 'success');
+        this.router.navigateByUrl(`/dashboard/vacation`);
+      });
     }else{
 
       console.log('ENVIANDO DATOS_Vacation:!!',this.VacationForm.value);
@@ -92,9 +97,11 @@ export class VacationsComponent implements OnInit {
   cargarVacation(id: number | string){
 
     if ( id === 'nuevo' ) {
+      this.titulo='Registrar Vacaciones';
       return;
     }
 
+    this.titulo='Actualizar Vacaciones';
     this.vacationservice.getByIDVacations(Number(id)).subscribe( datovacation =>{
        this.vacationSeleccionado = datovacation;
        console.log('RECUPERA',this.vacationSeleccionado);
@@ -125,5 +132,10 @@ export class VacationsComponent implements OnInit {
     }
   );
 
+  }
+
+  cancelar()
+  {
+    this.router.navigateByUrl(`/dashboard/vacation`);
   }
 }

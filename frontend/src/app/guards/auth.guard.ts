@@ -1,36 +1,3 @@
-// import { Injectable } from "@angular/core";
-// import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-// import { Observable } from "rxjs";
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// //export class AuthGuard implements CanActivateFn {
-//   export class AuthGuard implements CanActivate {
-
-
-//   canActivate(
-//     next: ActivatedRouteSnapshot,
-//     state: RouterStateSnapshot) {
-
-//       console.log('PASO AQUI CANACTIvE DEL GUARDS');
-//       return false;
-//     }
-// }
-
-// import { CanActivateFn } from '@angular/router';
-// import { UsuarioService } from '../services/usuario.service';
-
-// //export const authGuard: CanActivateFn = (route, state) => {
-
-// export const authGuard: CanActivateFn = (usuarioService: UsuarioService ) => {
-
-//   //constructor( private UsuarioService : UsuarioService){}
-//   //this.usuarioService.validarToken()
-  
-//   console.log('PASO AQUI CANACTIvE DEL GUARDS');
-//   return false;
-// };
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs';

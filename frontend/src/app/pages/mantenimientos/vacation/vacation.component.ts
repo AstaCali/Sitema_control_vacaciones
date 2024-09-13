@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Vacations } from 'src/app/models/vacation.model';
 import { VacationService } from 'src/app/services/vacation.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-vacation',
@@ -41,6 +42,34 @@ export class VacationComponent implements OnInit {
       this.desde -= valor;
     }
     this.cargarVacations();
+  }
+
+  //---ELIMINAR VACATION-
+  eliminarVacation( vacations : Vacations )
+  {
+    Swal.fire({
+      title: '¿Borrar Usuario?',
+      text: `Esta a punto de borrar a ${ vacations.name } ${vacations.last_name}`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Si, borrarlo'
+    }).then((result) => {
+      if (result.value) {
+        
+        //this.medicoService.borrarMedico( medico._id )
+        this.vacationservice.deleteVacation( vacations.id )
+          .subscribe( resp => {
+            Swal.fire(
+              'Vacacion borrado',
+              `${ vacations.name } fue eliminado correctamente`,
+              'success'
+            );
+            this.cargarVacations();
+            
+          });
+
+      }
+    })
   }
 
 }

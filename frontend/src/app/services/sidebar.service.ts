@@ -5,27 +5,34 @@ import { Injectable } from '@angular/core';
 })
 export class SidebarService {
 
-  menu: any[] = [
-    {
-      titulo: 'Dashboard',
-      icono: 'mdi mdi-gauge',
-      submenu: [
-        { titulo: 'Dashboard ', url: '/' },
-        // { titulo: 'Progress', url: 'progress' },
-        // { titulo: 'Grafica1', url: 'grafica1' },
-        // { titulo: 'Rxjs', url: 'rxjs' },
-      ]
-    },
-    {
-      titulo: 'Sis_Vacaciones',
-      icono: 'mdi mdi-folder-lock-open',
-      submenu: [
-        { titulo: 'Usuario', url: 'usuario' },
-        { titulo: 'Vacaciones', url: 'vacation' },
-        // { titulo: 'Odontologo', url: 'odontologos' },
-      ]
-    },
-  ];
+  public menu: any = [];
+
+  cargarMenu() {
+    const menuString = localStorage.getItem('menu');
+    this.menu = menuString ? JSON.parse(menuString) : [];
+  }
+
+  // menu: any[] = [
+  //   {
+  //     titulo: 'Dashboard',
+  //     icono: 'mdi mdi-gauge',
+  //     submenu: [
+  //       { titulo: 'Dashboard ', url: '/' },
+  //       // { titulo: 'Progress', url: 'progress' },
+  //       // { titulo: 'Grafica1', url: 'grafica1' },
+  //       // { titulo: 'Rxjs', url: 'rxjs' },
+  //     ]
+  //   },
+  //   {
+  //     titulo: 'Sis_Vacaciones',
+  //     icono: 'mdi mdi-folder-lock-open',
+  //     submenu: [
+  //       { titulo: 'Usuario', url: 'usuario' },
+  //       { titulo: 'Vacaciones', url: 'vacation' },
+  //       // { titulo: 'Odontologo', url: 'odontologos' },
+  //     ]
+  //   },
+  // ];
 
   // menu: any[] = [
   //   {
@@ -57,5 +64,5 @@ export class SidebarService {
   //   }
   // ];
 
-  constructor() { }
+  // constructor() { }
 }

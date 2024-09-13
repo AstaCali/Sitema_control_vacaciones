@@ -25,8 +25,8 @@ export class Usuario{
         public email: string,
         public end_date: Date,
         public password: string, // solo por esX4a Vers para editar
-        public role: Roles,
-        public person: Persona,
+        //public role: Roles,
+        //public person: Persona,
 
         public name_role: string,
         public name: string,

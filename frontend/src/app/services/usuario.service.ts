@@ -22,9 +22,6 @@ export class UsuarioService {
 
   constructor( private htt: HttpClient, private router :Router) { }
 
-  // crearUsuario( formData: any){
-  //   console.log('crear usaurio');
-  // }
   login( formData: any){
     //login( formData: LoginForm){
     //console.log('crear usaurio');
@@ -58,15 +55,15 @@ export class UsuarioService {
           name,
           last_name,
           ci,
-          celular,
+          cellphone,
           gender,
           state,
           role_id,
-          role,
-          person
+          //role,
+          //person
         } = resp.usuario;
-        this.usuario = new Usuario(id, email, end_date, '',name_role, name, last_name, ci, celular, gender,state, role_id, person, role); 
-        //localStorage.setItem('token', resp.token);
+        this.usuario = new Usuario(id, email, end_date,'',name_role, name, last_name, ci, cellphone, gender,state, role_id); 
+        // this.usuario = new Usuario(id, email, end_date, '',name_role, name, last_name, ci, cellphone, gender,state, role_id, role); 
         this.guardarLocalStorage(resp.token, resp.menu);
       }),
       map( resp => true),
@@ -80,11 +77,6 @@ export class UsuarioService {
     this.router.navigateByUrl('/login');
   }
 
-  // login( formData: LoginForm){
-  //   //console.log('crear usaurio');
-  //   return this.htt.post(`${base_url}/auth/login`, formData);
-  // }
-
   //----------------------------------DeTe aqui DRUD USAURIO--------------
   get token(): string {
     return localStorage.getItem('token') || '';
@@ -97,17 +89,18 @@ export class UsuarioService {
       }
     }
   }
-  get roleID(): number {
-    return this.usuario.role.id || 0;
-  }
+  // get roleID(): number {
+  //   return this.usuario.role.id || 0;
+  // }
 
   crearUsuario( formData: RegisterFormUsuario){
     //console.log('crear usaurio');
     return this.htt.post(`${base_url}/users`, formData, this.headers)
           .pipe(
-            tap( (resp: any) => {
-              localStorage.setItem('token', resp.token);
-            }) 
+            map((resp: any) => resp)
+            //tap( (resp: any) => {
+              //localStorage.setItem('token', resp.token);  //--crear dentro del sistema
+            //}) 
           )
   }
   
@@ -150,15 +143,4 @@ export class UsuarioService {
                 map((resp: any) => resp.roles as Role[])
               );
   }
-  // cargarMedicos() {
-
-  //   const url = `${ base_url }/medicos`;
-  //   return this.http.get( url, this.headers )
-  //             .pipe(
-  //               map( (resp: {ok: boolean, medicos: Medico[] }) => resp.medicos )
-  //             );
-  // }
-  // listProprietor(): Observable<any> {
-  //   return this.htt.get<any>(this.baseUrl+'/');
-  // }
 }

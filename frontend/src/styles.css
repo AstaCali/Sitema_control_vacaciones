@@ -8,3 +8,7 @@
 .cursor{
     cursor: pointer;
 }
+/*PARA EL TAMAÑO DE LA CELDAS */
+.w100 {
+    width: 100px;
+}

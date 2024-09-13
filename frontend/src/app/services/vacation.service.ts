@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Vacations } from '../models/vacation.model';
 
 const base_url = environment.serverBaseUrl;
 
@@ -66,5 +67,17 @@ export class VacationService {
                 map((resp: any) => resp.vacation )
                 // map((resp: any) => resp.user as Usuario)
               );
+  }
+  //--eleiminar vacation
+  deleteVacation( id:number)
+  {
+    const url = `${base_url}/vacations/${id}`;
+    return this.http.delete( url, this.headers);
+  }
+  //--EDITAR VACATION--
+  putVacation( vacation : Vacations)
+  {
+    const url = `${ base_url }/vacations/${ vacation.id }`;
+    return this.http.put( url, vacation, this.headers );
   }
 }

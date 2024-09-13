@@ -70,14 +70,16 @@ export class UsuariosComponent implements OnInit {
             
             //this.cargarUsuarios();
             Swal.fire(
-              'Médico borrado',
+              'Usuario borrado',
               `${ usuario.name } fue eliminado correctamente`,
               'success'
             );
-            this.cargarUsuarios('');
+            this.cargarUsuarios();
             
+          },(err) =>{
+            //     //-- SI SUCEDE UN ERROR MStRARA EStE SWATT
+            Swal.fire('Error', err.error.message, 'error');
           });
-
       }
     })
 
