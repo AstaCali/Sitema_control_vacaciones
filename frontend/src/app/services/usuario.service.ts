@@ -136,10 +136,6 @@ export class UsuarioService {
     const url = `${ base_url }/users/${ id }`;
     return this.htt.delete( url, this.headers );
   }
-  // borrarUsuario( id: number ) {
-  //   const url = `${ base_url }/users/${ id }`;
-  //   return this.htt.delete( url);
-  // }
   //----ACTUALIZAR USUARIO---
   actualizarUsuario( usuario: Usuario  ) {
 

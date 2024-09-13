@@ -14,6 +14,8 @@ import { UsuarioComponent } from './mantenimientos/usuarios/usuario.component';
 // import { TratamientoComponent } from './mantenimientoclinicas/tratamiento/tratamiento.component';
 // //import { authGuard } from '../guards/auth.guard';
 import { AuthGuard } from '../guards/auth.guard';
+import { VacationComponent } from './mantenimientos/vacation/vacation.component';
+import { VacationsComponent } from './mantenimientos/vacations/vacations.component';
 // import { TratamientosComponent } from './mantenimientoclinicas/tratamiento/tratamientos.component';
 
 const routes: Routes =[
@@ -33,6 +35,9 @@ const routes: Routes =[
       //---MANTENIMIENTO RUTA PARA LISTAR USUARIO
       { path: 'usuario', component: UsuariosComponent},
       { path: 'usuario/:id', component: UsuarioComponent},
+      //----Mantenimiento para vacaciones---
+      { path: 'vacation', component: VacationComponent},
+      { path: 'vacation/:id', component: VacationsComponent},
 
     ]
   },

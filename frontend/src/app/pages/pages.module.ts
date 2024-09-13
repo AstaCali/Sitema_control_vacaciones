@@ -18,6 +18,8 @@ import { PagesComponent } from './pages.component';
 import { UsuariosComponent } from './mantenimientos/usuarios/usuarios.component';
 import { UsuarioComponent } from './mantenimientos/usuarios/usuario.component';
 import { VacationComponent } from './mantenimientos/vacation/vacation.component';
+import { VacationsComponent } from './mantenimientos/vacations/vacations.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 
 @NgModule({
@@ -29,6 +31,7 @@ import { VacationComponent } from './mantenimientos/vacation/vacation.component'
     UsuariosComponent,
     UsuarioComponent,
     VacationComponent,
+    VacationsComponent,
   ],
   exports:[
     DashboardComponent,
@@ -46,7 +49,9 @@ import { VacationComponent } from './mantenimientos/vacation/vacation.component'
     //--imporTacion que hice
     SharedModule,
     RouterModule,
-    ComponentsModule
+    ComponentsModule,
+    //completar
+    AutocompleteLibModule
   ]
 })
 export class PagesModule { }
