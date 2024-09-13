@@ -92,11 +92,14 @@ const renewToken = async(req, res = response) => {
     const userLoginrenew = {
         id: usuario.id,
         email: usuario.email,
+        name: usuario.Person.name,
+        last_name: usuario.Person.last_name,
+        role_id: usuario.Role.id
         //password: user.password,
         //odontologoId: odontologo ? odontologo.id : 0, // Incluir el ID del odontólogo si existe
-        role: usuario.Role,
-        person: usuario.Person,
-        state : usuario.state
+        // role: usuario.Role,
+        // person: usuario.Person,
+        // state : usuario.state
     };
 
     res.json({

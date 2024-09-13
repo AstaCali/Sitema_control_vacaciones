@@ -13,6 +13,7 @@ const User = require('../models/user');
 //const { generarJWT } = require('../helpers/jwt');
 const { generarJWT } = require('../helpers/generar-jwt');
 const dbConnection = require('../database/config');
+const Vacation = require('../models/vacation');
 //--###########################--CRUD------#############################--
 //---------------editar los campos de persona en la tabla user-----
 // const userPut = async(req, res = response) => {
@@ -627,18 +628,24 @@ const deleteUser = async (req, res) => {
     // Buscar el usuario por id
     const user = await User.findOne({ where: { id } });
     if (!user) {
-      return res.status(404).json({ message: "user no encontrado" });
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    // Si no está relacionado, se puede eliminar el user y su correspondiente registro en la tabla PERSONA
+    // Verificar si el usuario tiene vacaciones asociadas
+    const vacations = await Vacation.findOne({ where: { user_id: id } });
+    if (vacations) {
+      return res.status(400).json({ message: "No se puede eliminar el usuario porque tiene vacaciones asociadas" });
+    }
+
+    // Si no tiene vacaciones, se puede eliminar el usuario y el registro en la tabla Persona
     await user.destroy();
     const person = await Person.findOne({ where: { id: user.person_id } });
     await person.destroy();
 
-    res.json({ msg: 'user eliminado correctamente' });
+    res.json({ message: 'Usuario eliminado correctamente' });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ msg: 'Hubo un error al eliminar el usuario' });
+    console.error('Error al eliminar el usuario:', error);
+    res.status(500).json({ message: 'Hubo un error al eliminar el usuario' });
   }
 };
 

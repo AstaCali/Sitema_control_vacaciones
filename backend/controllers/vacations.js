@@ -3,6 +3,7 @@ const Person = require('../models/person');
 const User = require('../models/user');
 const Vacation = require('../models/vacation');
 const moment = require('moment'); // Importa moment.js para el cálculo de fechas
+const dbConnection = require('../database/config');
 
 //--FORMATEAR LA FECHA Y LA HORA--
 const formatDate = (date) => {
@@ -233,13 +234,14 @@ const getByIDVacations = async(req, res)=>{
 };
 
 //--EDITAR USUARIO--
-// const putVacations = async(req, res)=>
-// {
-//     const { vacation_id, start_date, end_date, reason, observations } = req.body;
-//     const id = req.id;
+
+// const putVacations = async (req, res) => {
+//     const {id} = req.params;
+//     const { user_id, start_date, end_date, reason, observations } = req.body;
+//     const iduser = req.id;  // id del usuario que está registrando la modificación
 
 //     try {
-//         // Validar las fechas
+//         // Verificar que la fecha de inicio y fin estén presentes
 //         if (!start_date || !end_date) {
 //             return res.status(400).json({ message: 'Proporciona start_date y end_date' });
 //         }
@@ -251,53 +253,58 @@ const getByIDVacations = async(req, res)=>{
 //             return res.status(400).json({ message: 'start_date no puede ser posterior a end_date' });
 //         }
 
-//         // Buscar la solicitud de vacaciones
-//         const vacation = await Vacation.findByPk(vacation_id);
+//         const totalDays = calcularDiasLaborables(startDate, endDate);
+
+//         // Buscar las vacaciones que se están editando
+//         const vacation = await Vacation.findByPk(id);
 //         if (!vacation) {
 //             return res.status(404).json({ message: 'Vacaciones no encontradas' });
 //         }
 
-//         // Obtener el usuario asociado
-//         const user = await User.findByPk(vacation.user_id);
+//         // Obtener el usuario relacionado con las vacaciones
+//         const user = await User.findByPk(user_id);
 //         if (!user) {
 //             return res.status(404).json({ message: 'Usuario no encontrado' });
 //         }
 
-//         // Restaurar los días de vacaciones previamente descontados
-//         const previousTotalDays = vacation.total_day;
-//         user.entry_date += previousTotalDays; // Recuperar los días descontados originalmente
+//         // 1. Recuperar los días originales del usuario
+//         user.entry_date += vacation.total_day;  // Devolver los días que se descontaron originalmente
+//         await user.save();  // Guardar los días restaurados
 
-//         // Calcular los nuevos días de vacaciones
-//         const totalDays = calcularDiasLaborables(startDate, endDate);
-
-//         // Verificar si el usuario tiene suficientes días de vacaciones disponibles
+//         // 2. Verificar si el usuario tiene suficientes días de vacaciones disponibles para las nuevas fechas
 //         if (user.entry_date < totalDays) {
 //             return res.status(400).json({ message: 'No tienes suficientes días de vacaciones' });
 //         }
 
-//         // Actualizar la solicitud de vacaciones
+//         // 3. Actualizar las vacaciones con las nuevas fechas y razón
+//         vacation.user_id = user_id;
+//         vacation.registration_userid = iduser
 //         vacation.start_date = start_date;
 //         vacation.end_date = end_date;
-//         vacation.total_day = totalDays;
 //         vacation.reason = reason;
 //         vacation.observations = observations;
+
+//         vacation.total_day = totalDays;
 //         await vacation.save();
 
-//         // Descontar los nuevos días de vacaciones
+//         // 4. Descontar los días de vacaciones nuevamente
 //         user.entry_date -= totalDays;
-//         await user.save();  // Guardar los cambios en la base de datos
+//         await user.save();
 
 //         return res.status(200).json({ message: 'Vacaciones actualizadas', vacation });
-
 //     } catch (error) {
-//         console.error('Error al editar las vacaciones:', error);
-//         return res.status(500).json({ message: 'Error al editar las vacaciones' });
+//         console.error('Error al actualizar las vacaciones:', error);
+//         return res.status(500).json({ message: 'Error al actualizar las vacaciones' });
 //     }
-
 // };
+
 const putVacations = async (req, res) => {
-    const { vacation_id, user_id, start_date, end_date, reason, observations } = req.body;
-    const id = req.id;  // id del usuario que está registrando la modificación
+    const { id } = req.params;
+    const { user_id, start_date, end_date, reason, observations } = req.body;
+    const iduser = req.id;  // ID del usuario que está registrando la modificación
+
+    // Iniciar una transacción
+    const t = await dbConnection.transaction();
 
     try {
         // Verificar que la fecha de inicio y fin estén presentes
@@ -315,44 +322,94 @@ const putVacations = async (req, res) => {
         const totalDays = calcularDiasLaborables(startDate, endDate);
 
         // Buscar las vacaciones que se están editando
-        const vacation = await Vacation.findByPk(vacation_id);
+        const vacation = await Vacation.findByPk(id, { transaction: t });
         if (!vacation) {
+            await t.rollback();
             return res.status(404).json({ message: 'Vacaciones no encontradas' });
         }
 
         // Obtener el usuario relacionado con las vacaciones
-        const user = await User.findByPk(user_id);
+        const user = await User.findByPk(user_id, { transaction: t });
         if (!user) {
+            await t.rollback();
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        // 1. Recuperar los días originales del usuario
-        user.entry_date += vacation.total_day;  // Devolver los días que se descontaron originalmente
-        await user.save();  // Guardar los días restaurados
+        // Recuperar los días originales del usuario
+        user.entry_date += vacation.total_day;  // Devolver los días descontados originalmente
+        await user.save({ transaction: t });
 
-        // 2. Verificar si el usuario tiene suficientes días de vacaciones disponibles para las nuevas fechas
+        // Verificar si el usuario tiene suficientes días de vacaciones disponibles
         if (user.entry_date < totalDays) {
+            await t.rollback();
             return res.status(400).json({ message: 'No tienes suficientes días de vacaciones' });
         }
 
-        // 3. Actualizar las vacaciones con las nuevas fechas y razón
+        // Actualizar las vacaciones con las nuevas fechas y razón
+        vacation.user_id = user_id;
+        vacation.registration_userid = iduser;
         vacation.start_date = start_date;
         vacation.end_date = end_date;
-        vacation.total_day = totalDays;
         vacation.reason = reason;
         vacation.observations = observations;
-        await vacation.save();
+        vacation.total_day = totalDays;
+        await vacation.save({ transaction: t });
 
-        // 4. Descontar los días de vacaciones nuevamente
+        // Descontar los días de vacaciones nuevamente
         user.entry_date -= totalDays;
-        await user.save();
+        await user.save({ transaction: t });
+
+        // Confirmar la transacción
+        await t.commit();
 
         return res.status(200).json({ message: 'Vacaciones actualizadas', vacation });
     } catch (error) {
+        // Revertir la transacción en caso de error
+        await t.rollback();
         console.error('Error al actualizar las vacaciones:', error);
         return res.status(500).json({ message: 'Error al actualizar las vacaciones' });
     }
 };
+
+const deleteVacation = async(req,res)=>
+{
+    const { id } = req.params;  // ID de la vacación a eliminar
+
+    // Iniciar una transacción
+    const t = await dbConnection.transaction();
+
+    try {
+        // Buscar la vacación que se va a eliminar
+        const vacation = await Vacation.findByPk(id);
+        if (!vacation) {
+            return res.status(404).json({ message: 'Vacación no encontrada' });
+        }
+
+        // Obtener el usuario relacionado con la vacación
+        const user = await User.findByPk(vacation.user_id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Devolver los días de vacaciones al usuario
+        user.entry_date += vacation.total_day;
+        await user.save({ transaction: t });
+
+        // Eliminar la vacación
+        await vacation.destroy({ transaction: t });
+
+        // Confirmar la transacción
+        await t.commit();
+
+        return res.status(200).json({ message: 'Vacación eliminada y días devueltos al usuario' });
+    } catch (error) {
+        // Revertir la transacción en caso de error
+        await t.rollback();
+        console.error('Error al eliminar la vacación:', error);
+        return res.status(500).json({ message: 'Error al eliminar la vacación' });
+    }
+};
+
 // const getVacation = async (req, res) => {
 //     try {
 //         // Obtener las vacaciones incluyendo los detalles de User y Person
@@ -390,5 +447,6 @@ module.exports = {
     getVacationUser,
     getByIDVacations,
     putVacations,
+    deleteVacation,
     vacationPath
 }

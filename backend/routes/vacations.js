@@ -6,7 +6,9 @@ const {
     getVacation,
     getVacationUser,
     getByIDVacations,
-    vacationPath
+    vacationPath,
+    putVacations,
+    deleteVacation
 } = require('../controllers/vacations');
 const { validarJWT } = require('../middlewares');
 
@@ -21,11 +23,12 @@ router.get('/filtraruser', getVacationUser );
 // getByID
 router.get('/:id', getByIDVacations );
 
-// router.put('/:id', [
-// //router.put('/:id', [
-//     check('name', 'El nombre del rol es obligatorio').not().isEmpty()
-// ], editarPut);
+router.put('/:id', [
+    validarJWT
+    // check('name', 'El nombre del rol es obligatorio').not().isEmpty()
+], putVacations);
 
+router.delete('/:id', deleteVacation);
 // router.delete('/:id', deleteRole );
 
 router.patch('/', vacationPath );
