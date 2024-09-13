@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Vacations } from 'src/app/models/vacation.model';
+import { ImpresionService } from 'src/app/services/impresion.service';
 import { VacationService } from 'src/app/services/vacation.service';
 import Swal from 'sweetalert2';
 
@@ -15,7 +16,9 @@ export class VacationComponent implements OnInit {
   public totalVacations : number = 0;
   public desde : number = 0;
 
-  constructor ( private vacationservice: VacationService){}
+  constructor ( private vacationservice: VacationService,
+                private impresionservice: ImpresionService
+  ){}
 
   ngOnInit(): void {
 
@@ -70,6 +73,41 @@ export class VacationComponent implements OnInit {
 
       }
     })
+  }
+
+  //--IMPRIMIR--
+  onImprimir(datos: any)
+  {
+    alert('imprime');
+    console.log('IMPRIME¿¿', datos);
+    const encabezado = ["id","Empleado","Fecha Inicio","Fecha Final","Motivo","Total Vacaciones","Vacacion Tomadas","Vacion Restante"];
+    // const cuerpo = ["1","Paola","Organivia"];
+  // Mapeamos los datos
+  const cuerpo = [
+    {
+      id: datos.id,
+      nombre_completo:`${datos.name} ${datos.last_name}`,
+      // name: datos.name,
+      // last_name: datos.last_name,
+      // ci: datos.ci,
+      // cellphone: datos.cellphone,
+      // email: datos.email,
+      start_date: datos.start_date,
+      end_date: datos.end_date,
+      reason: datos.reason,
+      total_tomadas: `${datos.total_day + datos.entry_date}`,
+      total_day: datos.total_day,
+      entry_date: datos.entry_date
+      // observations: datos.observations,
+      // gender: datos.gender,
+
+    }
+  ];
+
+  // console.log('Encabezado:', encabezado);
+  // console.log('Cuerpo:', cuerpo);
+
+    this.impresionservice.imprimirReport(encabezado, cuerpo, "Reporte de Permiso Aceptado", false);
   }
 
 }

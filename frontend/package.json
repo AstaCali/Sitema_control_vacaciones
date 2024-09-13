@@ -20,6 +20,8 @@
     "@angular/router": "^16.2.0",
     "angular-ng-autocomplete": "^2.0.12",
     "chart.js": "^4.4.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.3",
     "ng2-charts": "^5.0.3",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.7.32",
