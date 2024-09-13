@@ -4,6 +4,8 @@ const { check } = require('express-validator');
 const { 
     postVacation,
     getVacation,
+    getVacationUser,
+    getByIDVacations,
     vacationPath
 } = require('../controllers/vacations');
 const { validarJWT } = require('../middlewares');
@@ -13,6 +15,11 @@ const router = Router();
 router.get('/', getVacation );
 
 router.post('/',[validarJWT], postVacation );
+
+//--PARRA HACER EL BUSCADOR DE FLKTRO EN VACACIONES
+router.get('/filtraruser', getVacationUser );
+// getByID
+router.get('/:id', getByIDVacations );
 
 // router.put('/:id', [
 // //router.put('/:id', [

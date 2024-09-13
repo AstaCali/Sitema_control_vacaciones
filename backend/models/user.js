@@ -24,7 +24,8 @@ const User=dbConnection.define(
             defaultValue: DataTypes.NOW // Establece la fecha actual como valor por defecto
         },
         entry_date: { // la cantidad de vacaciones
-            type: DataTypes.STRING,
+            // type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false, // O true si puede ser nulo
         },
         email : { 
