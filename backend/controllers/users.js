@@ -7,7 +7,6 @@ const { Op } = require('sequelize');
 const { where } = require('sequelize');
 const Role = require('../models/role');
 const Person = require('../models/person');
-// const Propietor = require('../models/proprietor');
 const User = require('../models/user');
 
 //const { generarJWT } = require('../helpers/jwt');
@@ -172,7 +171,7 @@ const updateUserState = async (req, res) => {
 
     res.json({
       "ok": true,
-      user
+      //user
     });
   } catch (error) {
     console.log(error);
@@ -188,108 +187,6 @@ const usuariosPatch = (req, res = response) => {
 }
 
 //-------------con buscador y listado---
-// const usersGet = async (req, res = response) => {
-//   try {
-//     const { search } = req.query;
-//     let users;
-
-//     if (search) {
-//       users = await User.findAll({
-//         include: [{ model: Role }, { model: Person }],
-//         where: {
-//           [Op.or]: [
-//             { '$Person.name$': { [Op.like]: `%${search}%` } },
-//             { '$Person.last_name$': { [Op.like]: `%${search}%` } }
-//           ]
-//         }
-//       });
-//     } else {
-//       users = await User.findAll({
-//         include: [{ model: Role }, { model: Person }]
-//       });
-//     }
-//     //-----contar un total de cuantos usuarios--
-
-//     //------hasta aqui-----
-//     const userToSend = users.map(user => {
-//       return {
-//         id: user.id,
-//         email: user.email,
-//         role: user.Role,
-//         person: user.Person,
-//         state: user.state
-//       };
-//     });
-
-//     res.status(200).json(
-//       { 
-//         ok: true,
-//         //total,
-//         "users": userToSend 
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal server error');
-//   }
-// };
-// const usersGet = async (req, res = response) => {
-//   try {
-
-//     const desde = Number(req.query.desde) || 0;
-//     const limite = Number(req.query.limite) || 6;
-//     const { search } = req.query;
-//     let whereCondition = {};
-
-//     if (search) {
-//       whereCondition = {
-//         [Op.or]: [
-//           { '$Person.name$': { [Op.like]: `%${search}%` } },
-//           { '$Person.last_name$': { [Op.like]: `%${search}%` } }
-//         ]
-//       };
-//     }
-
-//     // Realiza el conteo de todos los usuarios que coincidan con la condición
-//     const total = await User.count({
-//       include: [{ model: Person }],
-//       where: whereCondition
-//     });
-
-//     // Obtén los usuarios con las mismas condiciones
-//     const users = await User.findAll({
-//       include: [{ model: Role }, { model: Person }],
-//       offset: desde,
-//       limit: limite,
-//       where: whereCondition
-//     });
-
-//     const userToSend = users.map(user => {
-//       return {
-//         id: user.id,
-//         email: user.email,
-//         // role: user.Role,
-//         // person: user.Person,
-//         name_role: user.Role.name,
-//         role_id: user.Role.id,
-//         name: user.Person.name,
-//         last_name: user.Person.last_name,
-//         ci: user.Person.ci,
-//         celular: user.Person.celular,
-//         gender: user.Person.gender,
-//         state: user.state
-//       };
-//     });
-
-//     res.status(200).json({
-//       ok: true,
-//       total, // Incluye el total en la respuesta
-//       users: userToSend
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send('Internal server error');
-//   }
-// };
 //--###########################--HASTA AQUI------##################-
 //-------------con listar USAURIO PERSONA CON ROLE "Paciente"---
 // const usersGetPerson = async (req, res = response) => {
@@ -655,8 +552,6 @@ module.exports = {
 
   updateUserState,
   usuariosPatch,
-  //-----
-  //usersGetPerson,
   //----##--
   usersPost,
   usersGet,

@@ -13,9 +13,9 @@ const formatDate = (date) => {
 
 // Lista de días festivos (en formato 'YYYY-MM-DD')
 const diasFestivos = [
-    '2024-12-25', // Navidad
-    '2024-01-01', // Año Nuevo
-    '2024-05-01', // Día del Trabajador
+    '2024-12-25', // navidad
+    '2024-01-01', // año Nuevo
+    '2024-05-01', // día del Trabajador
 ];
 
 // Función para contar días laborables excluyendo fines de semana y festivos
@@ -234,70 +234,6 @@ const getByIDVacations = async(req, res)=>{
 };
 
 //--EDITAR USUARIO--
-
-// const putVacations = async (req, res) => {
-//     const {id} = req.params;
-//     const { user_id, start_date, end_date, reason, observations } = req.body;
-//     const iduser = req.id;  // id del usuario que está registrando la modificación
-
-//     try {
-//         // Verificar que la fecha de inicio y fin estén presentes
-//         if (!start_date || !end_date) {
-//             return res.status(400).json({ message: 'Proporciona start_date y end_date' });
-//         }
-
-//         const startDate = moment(start_date, 'YYYY-MM-DD');
-//         const endDate = moment(end_date, 'YYYY-MM-DD');
-
-//         if (startDate.isAfter(endDate)) {
-//             return res.status(400).json({ message: 'start_date no puede ser posterior a end_date' });
-//         }
-
-//         const totalDays = calcularDiasLaborables(startDate, endDate);
-
-//         // Buscar las vacaciones que se están editando
-//         const vacation = await Vacation.findByPk(id);
-//         if (!vacation) {
-//             return res.status(404).json({ message: 'Vacaciones no encontradas' });
-//         }
-
-//         // Obtener el usuario relacionado con las vacaciones
-//         const user = await User.findByPk(user_id);
-//         if (!user) {
-//             return res.status(404).json({ message: 'Usuario no encontrado' });
-//         }
-
-//         // 1. Recuperar los días originales del usuario
-//         user.entry_date += vacation.total_day;  // Devolver los días que se descontaron originalmente
-//         await user.save();  // Guardar los días restaurados
-
-//         // 2. Verificar si el usuario tiene suficientes días de vacaciones disponibles para las nuevas fechas
-//         if (user.entry_date < totalDays) {
-//             return res.status(400).json({ message: 'No tienes suficientes días de vacaciones' });
-//         }
-
-//         // 3. Actualizar las vacaciones con las nuevas fechas y razón
-//         vacation.user_id = user_id;
-//         vacation.registration_userid = iduser
-//         vacation.start_date = start_date;
-//         vacation.end_date = end_date;
-//         vacation.reason = reason;
-//         vacation.observations = observations;
-
-//         vacation.total_day = totalDays;
-//         await vacation.save();
-
-//         // 4. Descontar los días de vacaciones nuevamente
-//         user.entry_date -= totalDays;
-//         await user.save();
-
-//         return res.status(200).json({ message: 'Vacaciones actualizadas', vacation });
-//     } catch (error) {
-//         console.error('Error al actualizar las vacaciones:', error);
-//         return res.status(500).json({ message: 'Error al actualizar las vacaciones' });
-//     }
-// };
-
 const putVacations = async (req, res) => {
     const { id } = req.params;
     const { user_id, start_date, end_date, reason, observations } = req.body;

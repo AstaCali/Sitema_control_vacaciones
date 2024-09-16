@@ -3,9 +3,6 @@ const { check } = require('express-validator');
 
 const {
     validarJWT,
-    // validarCampos,
-    // esAdminRole,
-    // tieneRole
 } = require('../middlewares');
 
 const router = Router();
@@ -15,9 +12,6 @@ const {
     personGet,
     personPost,
     personTodo
-    // crearPersona,
-    // editarPersona,
-    // eliminarPersona
 } = require('../controllers/persons');
 
 router.get('/:id', personGetById);
@@ -37,10 +31,6 @@ router.post('/',[
 router.get('/general/:busqueda', validarJWT, personTodo);
 
 // router.put('/:id',[
-//     check('nombre', 'El nombre persona es obligatorio').not().isEmpty(),
-//     check('apellido', 'El apellido de persona es obligatorio').not().isEmpty(),
-//     check('ci', 'El CI persona es obligatorio').not().isEmpty(),
-//     check('genero', 'El genero de persona es obligatorio').not().isEmpty()
 // ], editarPersona );
 
 // router.delete('/:id', eliminarPersona );

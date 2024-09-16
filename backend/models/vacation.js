@@ -44,7 +44,7 @@ const Vacation = dbConnection.define(
     }
 );
 
-// Define the association after both models are defined
+// Define la relacion con el odelo User como forania
 Vacation.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = Vacation;

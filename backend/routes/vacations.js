@@ -1,5 +1,4 @@
 const { Router } = require('express');
-const { check } = require('express-validator');
 
 const { 
     postVacation,
@@ -25,11 +24,9 @@ router.get('/:id', getByIDVacations );
 
 router.put('/:id', [
     validarJWT
-    // check('name', 'El nombre del rol es obligatorio').not().isEmpty()
 ], putVacations);
 
 router.delete('/:id', deleteVacation);
-// router.delete('/:id', deleteRole );
 
 router.patch('/', vacationPath );
 

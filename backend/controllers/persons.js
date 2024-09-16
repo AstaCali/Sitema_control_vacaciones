@@ -44,48 +44,45 @@ const personGetById = async(req, res) => {
 //         });
 //     }
 // }
-const personGet = async (req, res) => {
-    try {
-        // Buscar usuarios con el rol de 'PACIENTE'
-        const users = await User.findAll({
-            include: [
-                {
-                    model: Person,
-                },
-                {
-                    model: Role,
-                    where: { name: 'PACIENTE' } // Filtrar por rol 'PACIENTE'
-                }
-            ]
-        });
+// const personGet = async (req, res) => {
+//     try {
+//         // Buscar usuarios con el rol de 'PACIENTE'
+//         const users = await User.findAll({
+//             include: [
+//                 {
+//                     model: Person,
+//                 },
+//                 {
+//                     model: Role,
+//                     where: { name: 'EMPLEADO' } // Filtrar por rol 'PACIENTE'
+//                 }
+//             ]
+//         });
 
-        // Mapear los datos obtenidos para enviar la respuesta
-        const personsToSend = users.map(user => {
-            const personData = user.Person;
-            return {
-                id: personData.id,
-                name: personData.name,
-                last_name: personData.last_name
-            };
-        });
+//         // Mapear los datos obtenidos para enviar la respuesta
+//         const personsToSend = users.map(user => {
+//             const personData = user.Person;
+//             return {
+//                 id: personData.id,
+//                 name: personData.name,
+//                 last_name: personData.last_name
+//             };
+//         });
 
-        res.json({
-            ok: true,
-            person: personsToSend
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({
-            msg: "Error en el servidor"
-        });
-    }
-};
+//         res.json({
+//             ok: true,
+//             person: personsToSend
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             msg: "Error en el servidor"
+//         });
+//     }
+// };
 //----Crear persona----
 const personPost  = async (req, res) => {
     const { name, last_name, ci, celular, gender } = req.body;
-    //---- PARA AGARRAR EL ID y SABER QUIEN LO ESTA REGISTRANDO AL LOEARSE.
-    // const id = req.id;
-    // console.log('LLEGA_ID_USER',id);
   
     try {
       // Crear la persona
@@ -101,17 +98,7 @@ const personPost  = async (req, res) => {
     }
 };
 //-----2024 ---CONtINUA BUSQUEDA DE PERSONA PARA LA COTIZACION--
-// const personTodo = async(req, res = response ) =>{
-//     const busqueda = req.params.busqueda;
-//     const regex = new RegExp( busqueda, 'i');
 
-//     const persons = await Person.find({name: regex});
-
-//     res.json({
-//         ok: true,
-//         "personas":persons,
-//     })
-// }
 const personTodo = async (req, res) => {
     const busqueda = req.params.busqueda;
     const regex = new RegExp(busqueda, 'i');
@@ -140,74 +127,29 @@ const personTodo = async (req, res) => {
     }
 };
 
-// const editarPersona = async (req, res) => {
-//   const { id } = req.params;
-//   const { nombre, apellido, ci, genero } = req.body;
+const personGet = async (req, res) => {
+    try {
+        // Contar usuarios con el rol de 'EMPLEADO'
+        const totalEmpleados = await User.count({
+            include: [
+                {
+                    model: Role,
+                    where: { name: 'EMPLEADO' } // Filtrar por rol 'EMPLEADO'
+                }
+            ]
+        });
 
-//   try {
-//     // Actualizar la persona
-//     await Persona.update({ nombre, apellido, ci, genero }, { where: { id } });
-
-//     // Buscar la persona actualizada
-//     const updatedPersona = await Persona.findOne({ where: { id } });
-
-//     // Verificar si la persona es usuario y actualizar si es necesario
-//     const usuario = await Usuario.findOne({ where: { persona_id: id } });
-//     if (usuario) {
-//       await Usuario.update({ 
-//         nombre: updatedPersona.nombre,
-//         apellido: updatedPersona.apellido,
-//         ci: updatedPersona.ci,
-//         genero: updatedPersona.genero
-//       }, { where: { persona_id: id } });
-//     }
-
-//     // Verificar si la persona es propietario y actualizar si es necesario
-//     const propietario = await Propietario.findOne({ where: { persona_id: id } });
-//     if (propietario) {
-//       await Propietario.update({ 
-//         nombre: updatedPersona.nombre,
-//         apellido: updatedPersona.apellido,
-//         ci: updatedPersona.ci,
-//         genero: updatedPersona.genero
-//       }, { where: { persona_id: id } });
-//     }
-
-//     res.json(updatedPersona);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: 'Hubo un error al actualizar a la persona' });
-//   }
-// }
-
-// //solo se puede eliminar si pesrsona no esta relacionado con niniguna tabla
-// const eliminarPersona = async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     // Buscar la persona por su id
-//     const persona = await Persona.findOne({ where: { id } });
-
-//     // Verificar si la persona está relacionada con algún usuario
-//     const usuario = await Usuario.findOne({ where: { persona_id: id } });
-
-//     // Verificar si la persona está relacionada con algún propietario
-//     const propietario = await Propietario.findOne({ where: { persona_id: id } });
-
-//     if (usuario || propietario) {
-//       // Si la persona está relacionada con alguna entidad, retornar un mensaje de error
-//       return res.status(400).json({ message: 'No se puede eliminar la persona porque está relacionada con otra entidad' });
-//     }
-
-//     // Si la persona no está relacionada con ninguna entidad, eliminarla
-//     await Persona.destroy({ where: { id } });
-
-//     res.json({ message: 'La persona ha sido eliminada correctamente' });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: 'Hubo un error al eliminar la persona' });
-//   }
-// }
+        res.json({
+            ok: true,
+            totalEmpleados
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            msg: "Error en el servidor"
+        });
+    }
+};
 
 const personPath = (req, res = response) => {
     res.json({
@@ -221,9 +163,5 @@ module.exports = {
     personGet,
     personPost,
     personTodo
-    // crearPersona,
-    // editarPersona,
-    // eliminarPersona,
-    //personPacienteGet,
 
 }

@@ -8,18 +8,32 @@ const rolesPath = (req, res = response) => {
         msg: 'patch API - rolesPath'
     });
 }
-const roleGet = async (req, res) => {
+const roleGetTotal = async (req, res) => {
     try {
-      const listRol = await Role.findAll();
+      const totalRole = await Role.count();
   
       res.json({
         "ok": true,
-        "roles":listRol
+        "roles":totalRole
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: 'Hubo un error al obtener la lista de roles' });
     }
+};
+
+const roleGet = async (req, res) => {
+  try {
+    const role = await Role.findAll();
+
+    res.json({
+      "ok": true,
+      "roles":role
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Hubo un error al obtener la lista de roles' });
+  }
 };
 
 // const createRole = async (req, res) => {
@@ -67,17 +81,9 @@ const roleGet = async (req, res) => {
 // }
 
 module.exports = {
-  // createRole,
-  // editarPut,
   roleGet,
-  //deleteRole,
-  
+  roleGetTotal ,
   rolesPath
-  // usuariosGet,
-  // usuariosPost,
-  // usuariosPut,
-  // usuariosPatch,
-  // usuariosDelete,
 }
 //---CONSULTA PARA INSER◘4AR DATOS--
 // INSERT INTO `roles` (`id`, `name`, `createdAt`, `updatedAt`) 
