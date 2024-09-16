@@ -4,6 +4,7 @@ const cors = require('cors');
 const dbConnection  = require('../database/config');
 const User = require('./user');
 const Role = require('./role');
+const inserDatos = require('../Insertardatos/datouser');
 
 //-------------TratamienPo--
 const Person = require('./person');
@@ -60,10 +61,10 @@ class Server {
     async conectarDB(){
         try {
             await dbConnection.authenticate();
-            // await dbConnection.sync();// para crear nuevos tablas general
-            //await dbConnection.sync(Vacation);// para crear nuevos tablas solas
-            //await Role.create(TipoCita);
+            await dbConnection.sync();// para crear nuevos tablas general
+            //await dbConnection.sync(Vacation);// para crear nuevos tablas solas;
             console.log("conectado a la base de datos");
+            await inserDatos.insertDefaultUser();
         } catch (error) {
             throw new Error(error);
         }

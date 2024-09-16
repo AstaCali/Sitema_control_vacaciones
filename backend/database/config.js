@@ -12,7 +12,8 @@ const dbConnection = new Sequelize(
     username: 'root',
     //password: 'Caleb19',
     password: '',
-    database: 'gustov'
+    // database: 'gustov'
+    database: 'gustov_prueva'
   }
 );
 
