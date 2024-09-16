@@ -88,7 +88,11 @@ export class VacationsComponent implements OnInit {
         console.log('RESP:', resp);
         Swal.fire('Creado', 'Creado correctamente', 'success');
         this.router.navigateByUrl(`/dashboard/vacation`);
-      });
+      },
+      error=>{
+        alert(error.error.message);
+      }
+    );
 
     }
   }

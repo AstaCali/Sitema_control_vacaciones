@@ -143,4 +143,9 @@ export class UsuarioService {
                 map((resp: any) => resp.roles as Role[])
               );
   }
+  //--CAMBIAR ESTADI--
+  putEstado(usuario : Usuario){
+    const url = `${ base_url }/users/state/${ usuario.id }`;
+    return this.htt.put( url, usuario );
+  }
 }

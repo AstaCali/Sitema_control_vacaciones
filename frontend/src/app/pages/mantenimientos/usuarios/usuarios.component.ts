@@ -96,4 +96,15 @@ export class UsuariosComponent implements OnInit {
     //this.cambiarPagina('');
   }
 
+  cambiarStado(usuarioo : Usuario){
+
+    this.usarioService.putEstado( usuarioo )
+    .subscribe( resp =>{
+      console.log('SE ACTUALIZO',resp)
+      // Swal.fire('Actualizando',`${ state.name_treatment } actualizado correctamente`, 'success' );
+      this.cargarUsuarios();
+      //this.router.navigateByUrl(`/dashboard/tratamientos`)
+    })
+  }
+
 }

@@ -17,24 +17,24 @@
                 <div class="d-flex no-block">
                     <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
                     <div class="align-self-center">
-                        <h6 class="text-white m-t-10 m-b-0">Permisos</h6>
-                        <h2 class="m-t-0 text-white">236,000</h2></div>
+                        <h6 class="text-white m-t-10 m-b-0">Roles</h6>
+                        <h2 class="m-t-0 text-white">{{totalRole}}</h2></div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div class="col-lg-3">
-        <div class="card bg-primary">
+    <div class="col-lg-4">
+        <div class="card bg-info">
             <div class="card-body">
                 <div class="d-flex no-block">
-                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/assets-w.png" alt="Income"></div>
+                    <div class="m-r-20 align-self-center"><img src="../assets/images/icon/expense-w.png" alt="Income"></div>
                     <div class="align-self-center">
-                        <h6 class="text-white m-t-10 m-b-0">Total Assets</h6>
-                        <h2 class="m-t-0 text-white">987,563</h2></div>
+                        <h6 class="text-white m-t-10 m-b-0">Permisos</h6>
+                        <h2 class="m-t-0 text-white">0</h2></div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <div class="col-lg-4">
         <div class="card bg-danger">
             <div class="card-body">
@@ -42,8 +42,77 @@
                     <div class="m-r-20 align-self-center"><img src="../assets/images/icon/staff-w.png" alt="Income"></div>
                     <div class="align-self-center">
                         <h6 class="text-white m-t-10 m-b-0">Empleados registrados</h6>
-                        <h2 class="m-t-0 text-white">987,563</h2></div>
+                        <h2 class="m-t-0 text-white">{{totalUser}}</h2></div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-8">
+                        <h4 class="card-title">Solicitudes de Permiso(NO requerido aun)</h4> 
+                    </div>
+<!-- 
+                    <div class="col">
+                        <div class="text-right">
+                            <a class="btn btn-primary">
+                                <i class="fa fa-hospital-o"></i> 
+                                Crear Trabajador
+                            </a>
+                        </div>
+                    </div> -->
+
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                                <th>Estado</th>
+                                <th class="text-nowrap">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <!-- <tr *ngFor="let usuarios of usuario"> colocar aqui el array para listar -->
+                                <!-- <td>colocar aqui</td>
+                                <td>colocar aqui</td>
+                                <td>colocar aqui</td>
+                                <td>colocar aqu</td> -->
+                                <!-- <td>
+                                    <div class="progress progress-xs margin-vertical-10 ">
+                                        <div class="progress-bar bg-danger" style="width: 35% ;height:6px;"></div>
+                                    </div>
+                                </td> -->
+                                <!-- <td class="text-nowrap">
+                                    <a 
+                                        data-toggle="tooltip" 
+                                        data-original-title="Editar">
+                                        <i class="fa fa-pencil text-inverse m-r-10"></i> 
+                                    </a>
+                                    <a class="cursor"
+                                        data-toggle="tooltip"
+                                        data-original-title="Borrar"
+                                        > 
+                                        <i class="fa fa-close text-danger"></i> 
+                                    </a>
+                                </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button class="btn btn-secondary">Anterior</button>
+                &nbsp;
+                <button class="btn btn-secondary">Siguiente</button>
             </div>
         </div>
     </div>
