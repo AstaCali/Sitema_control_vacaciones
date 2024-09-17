@@ -1,3 +1,11 @@
+# Instalar Paquetes
+
+Recuerden que deben de ejecutar ```npm install``` para reconstruir los módulos de Node.
+
+# Levantar el servidor 
+
+ejecutar ```ng serve ``` para levantar el servidor de Angular.
+
 # Dentalbo
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
