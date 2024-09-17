@@ -1,5 +1,7 @@
 # Tener Node Version
 Version 10.0.0 o la Ulima Version
+# ingresarf al cmd 
+cd backend
 
 # Instalar Paquete
 
