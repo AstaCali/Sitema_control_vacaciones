@@ -4,7 +4,7 @@ Recuerden que deben de ejecutar ```npm install``` para reconstruir los módulos 
 
 # Levantar el servidor 
 
-ejecutar ```ng serve ``` para levantar el servidor de Angular.
+ejecutar ```ng serve ``` o ```ng serve -o ``` para levantar el servidor de Angular.
 
 # Dentalbo
 
